@@ -279,10 +279,11 @@ function perderVida() {
 if (!this.sound.get('musicaFondo')) {
     this.musica = this.sound.add('musicaFondo', { loop: true, volume: 0.5 });
     this.musicamuerte = this.sound.add('sonidoMuerte', { loop: true, volume: 0.5 });
-    this.musicacaida = this.sound.add('sonidoCaida', { loop: true, volume: 0.5 });
+    this.musicacaida = this.sound.add('sonidoCaida', { loop: false, volume: 0.5 });
     this.victoria = this.sound.add('victoria', { loop: true, volume: 0.5 });
     this.musica.play();
 }
+this.gameOver = false;
  
 }
 
@@ -290,20 +291,21 @@ if (!this.sound.get('musicaFondo')) {
 
 function update(){
 
-    if (personaje.y > 660) { // si cae más abajo del fondo del juego
-        this.physics.pause();
-        personaje.setTint(0xff0000);
-        personaje.anims.play('turn');
-        this.add.text(250, 300, '¡Game over!', { fontSize: '32px', fill: '#ff0000' });
+   if (personaje.y > 660 && !this.gameOver) {
+    this.gameOver = true;
+    this.physics.pause();
+    personaje.setTint(0xff0000);
+    personaje.anims.play('turn');
+    this.musicacaida.play(); 
+
+    this.add.text(250, 300, '¡Game over!', { fontSize: '32px', fill: '#ff0000' });
+
+    this.time.delayedCall(2000, () => {
         
-        this.time.delayedCall(2000, () => {
-          //  this.musicamuerte.play();
-            this.scene.restart();
-            this.musica.play();    
-        });
-       
-    }
-    
+        this.scene.restart();
+        this.musica.play();    
+    });
+}
     
     if (cursors.left.isDown) {
         personaje.setVelocityX(-160);
@@ -330,5 +332,6 @@ function update(){
         }
      });  
 
+}
      
-}    
+  
