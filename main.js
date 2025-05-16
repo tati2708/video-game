@@ -320,7 +320,7 @@ function update(){
         personaje.setVelocityX(0);
         personaje.anims.play('turn');
  }
-    if (cursors.up.isDown && personaje.body.touching.down) {
+    if (cursors.space.isDown && personaje.body.touching.down) {
         personaje.setVelocityY(-450);
       }
 
